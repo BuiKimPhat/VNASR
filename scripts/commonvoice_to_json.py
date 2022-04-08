@@ -85,4 +85,5 @@ if __name__ == "__main__":
     parser.add_argument('--not-convert', dest='convert', action='store_false',
                         help='says that the script should not convert mp3 to wav')
     args = parser.parse_args()
+    
     main(args)
