@@ -40,7 +40,7 @@ def main(args):
                 index = index + 1
             else:
                 data.append({
-                "key": directory + "/clips/" + file_name,
+                "key": directory + "/clips/" + filename,
                 "text": text
                 })
                 
@@ -49,23 +49,23 @@ def main(args):
 
     # create train.json
     f = open(args.save_path +"/"+ "train.json", "w")
-    with open(args.save_path +"/"+ 'train.json','w') as f:
+    with open(args.save_path +"/"+ 'train.json','w', encoding='utf8') as f:
         d = len(data)
         i=0
         while(i<int(d-d*percent/100)):
             r=data[i]
-            line = json.dumps(r)
+            line = json.dumps(r, ensure_ascii=False)
             f.write(line + "\n")
             i = i+1
     
     # create test.json
     f = open(args.save_path +"/"+ "test.json", "w")
-    with open(args.save_path +"/"+ 'test.json','w') as f:
+    with open(args.save_path +"/"+ 'test.json','w', encoding='utf8') as f:
         d = len(data)
         i=int(d-d*percent/100)
         while(i<d):
             r=data[i]
-            line = json.dumps(r)
+            line = json.dumps(r, ensure_ascii=False)
             f.write(line + "\n")
             i = i+1
     print("Done!")
