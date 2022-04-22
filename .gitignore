@@ -1,1 +1,6 @@
 datasets/cv-corpus-8.0-2022-01-19/
+venv/
+trained_model/
+__pycache__/
+neuralnet/__pycache__/
+audio_temp

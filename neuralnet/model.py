@@ -22,7 +22,7 @@ class DropNorm(nn.Module):
 class SpeechRecognition(nn.Module):
     hyper_parameters = {
         "num_classes": 29,
-        "n_feats": 80,
+        "n_feats": 81,
         "dropout": 0.1,
         "hidden_size": 1024,
         "num_layers": 1

@@ -3,7 +3,7 @@ import torchaudio
 import torch.nn as nn
 import pandas as pd
 import numpy as np
-from utils import TextProcess
+from .map import TextProcess
 
 # Create Spectrum Augmentation Module
 class SpecAugment(nn.Module):
@@ -69,7 +69,7 @@ class LogMelSpec(nn.Module):
         x = np.log(x + 1e-14)  # logrithmic, add small value to avoid inf
         return x
 
-def get_featurizer(sample_rate, n_feats=80):
+def get_featurizer(sample_rate, n_feats=81):
     """ Get LogMelSpectrogram module 
     (if sample_rate = 8000, window length is 0.02s, hop length is 0.01s) """
     return LogMelSpec(sample_rate=sample_rate, n_mels=n_feats,  win_length=160, hop_length=80)
@@ -77,7 +77,7 @@ def get_featurizer(sample_rate, n_feats=80):
 class Data(torch.utils.data.Dataset):
     # override argparse
     parameters = {
-        "sample_rate": 8000, "n_feats": 80,
+        "sample_rate": 8000, "n_feats": 81,
         "specaug_rate": 0.5, "specaug_policy": 3,
         "time_mask": 70, "freq_mask": 15 
     }
@@ -151,10 +151,4 @@ def collate_fn_padd(data):
 
     spectrograms = nn.utils.rnn.pad_sequence(spectrograms, batch_first=True).unsqueeze(1).transpose(2, 3)
     labels = nn.utils.rnn.pad_sequence(labels, batch_first=True)
-    input_lengths = input_lengths
-    # print(spectrograms.shape)
-    label_lengths = label_lengths
-    # ## compute mask
-    # mask = (batch != 0).cuda(gpu)
-    # return batch, lengths, mask
     return spectrograms, labels, input_lengths, label_lengths

@@ -19,7 +19,7 @@ class SpeechModule(LightningModule):
     def __init__(self, model, args):
         super(SpeechModule, self).__init__()
         self.model = model
-        self.criterion = nn.CTCLoss(blank=28, zero_infinity=True)
+        self.criterion = nn.CTCLoss(blank=91, zero_infinity=True)
         self.args = args
 
     def forward(self, x, hidden):
@@ -30,7 +30,7 @@ class SpeechModule(LightningModule):
         self.scheduler = {"scheduler": optim.lr_scheduler.ReduceLROnPlateau(
                                         self.optimizer, mode='min',
                                         factor=0.50, patience=6),
-                            "monitor": "metric_to_track"}
+                            "monitor": "val_loss"}
         return [self.optimizer], [self.scheduler]
 
     def step(self, batch):
