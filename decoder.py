@@ -4,18 +4,13 @@ import torch
 
 textprocess = TextProcess()
 
-# 0 - 91
-labels = [' ', 'a', 'ă', 'â', 'b', 'c', 'd', 'đ', 'e', 'ê', 'g', 'h', 'i', 'k', 'l', 'm', 'n', 'o', 'ô', 'ơ', 'p', 'q', 'r', 's', 't', 'u', 'ư', 'v', 'x', 'y', 'à', 'á', 'ả', 'ã', 'ạ', 'ằ', 'ắ', 'ẳ', 'ẵ', 'ặ', 'ầ', 'ấ', 'ẩ', 'ẩ', 'ẫ', 'ậ', 'è', 'é', 'ẻ', 'ẽ', 'ẹ', 'ề', 'ế', 'ể', 'ễ', 'ệ', 'ì', 'í', 'ỉ', 'ĩ', 'ị', 'ò', 'ó', 'ỏ', 'õ', 'ọ', 'ồ', 'ố', 'ổ', 'ỗ', 'ộ', 'ờ', 'ớ', 'ở', 'ỡ', 'ợ', 'ù', 'ú', 'ủ', 'ũ', 'ụ', 'ừ', 'ứ', 'ử', 'ữ', 'ự', 'ỳ', 'ý', 'ỷ', 'ỹ', 'ỵ', '_']
+# 0 - 90
+labels = [' ', 'a', 'ă', 'â', 'b', 'c', 'd', 'đ', 'e', 'ê', 'g', 'h', 'i', 'k', 'l', 'm', 'n', 'o', 'ô', 'ơ', 'p', 'q', 'r', 's', 't', 'u', 'ư', 'v', 'x', 'y', 'à', 'á', 'ả', 'ã', 'ạ', 'ằ', 'ắ', 'ẳ', 'ẵ', 'ặ', 'ầ', 'ấ', 'ẩ', 'ẩ', 'ẫ', 'ậ', 'è', 'é', 'ẻ', 'ẽ', 'ẹ', 'ề', 'ế', 'ể', 'ễ', 'ệ', 'ì', 'í', 'ỉ', 'ĩ', 'ị', 'ò', 'ó', 'ỏ', 'õ', 'ọ', 'ồ', 'ố', 'ổ', 'ỗ', 'ộ', 'ờ', 'ớ', 'ở', 'ỡ', 'ợ', 'ù', 'ú', 'ủ', 'ũ', 'ụ', 'ừ', 'ứ', 'ử', 'ữ', 'ự', 'ỳ', 'ý', 'ỷ', 'ỹ', 'ỵ']
 
 def DecodeGreedy(output, blank_label=91, collapse_repeated=True):
-    arg_maxes = torch.argmax(output, dim=2).squeeze()
-    # print(output)
-    # print(output.shape)
-    # print(arg_maxes)
-    # print(arg_maxes.shape)
+    arg_maxes = torch.argmax(output, dim=2).squeeze(1)
     decode = []
     for i, index in enumerate(arg_maxes):
-        # print(i,index)
         if index != blank_label:
             if collapse_repeated and index == arg_maxes[i-1]:
                 continue
@@ -24,11 +19,11 @@ def DecodeGreedy(output, blank_label=91, collapse_repeated=True):
 
 class CTCBeamDecoder:
 
-    def __init__(self, beam_size=100, blank_id=labels.index('_'), kenlm_path=None):
+    def __init__(self, beam_size=100, blank_id=labels.index(' '), kenlm_path=None):
         print("loading beam search with lm...")
         self.decoder = ctcdecode.CTCBeamDecoder(
             labels,
-            beam_width=beam_size, blank_id=labels.index('_'),
+            beam_width=beam_size, blank_id=labels.index(' '),
             model_path=kenlm_path)
         print("finished loading beam search")
 

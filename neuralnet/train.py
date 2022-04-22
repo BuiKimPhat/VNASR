@@ -19,7 +19,7 @@ class SpeechModule(LightningModule):
     def __init__(self, model, args):
         super(SpeechModule, self).__init__()
         self.model = model
-        self.criterion = nn.CTCLoss(blank=91, zero_infinity=True)
+        self.criterion = nn.CTCLoss(blank=0, zero_infinity=True)
         self.args = args
 
     def forward(self, x, hidden):

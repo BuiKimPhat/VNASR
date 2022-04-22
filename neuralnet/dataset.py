@@ -57,7 +57,7 @@ class SpecAugment(nn.Module):
 
 
 class LogMelSpec(nn.Module):
-    def __init__(self, sample_rate=16000, n_mels=128, win_length=400, hop_length=200):
+    def __init__(self, sample_rate=8000, n_mels=128, win_length=160, hop_length=80):
         super(LogMelSpec, self).__init__()
         # Get spectrogram of signal
         self.transform = torchaudio.transforms.MelSpectrogram(

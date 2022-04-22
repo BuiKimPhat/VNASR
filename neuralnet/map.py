@@ -121,4 +121,4 @@ class TextProcess:
 		string = []
 		for i in labels:
 			string.append(self.index_map[i])
-		return ''.join(string)
+		return ''.join(string).replace('<SPACE>', ' ')

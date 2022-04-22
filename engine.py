@@ -76,7 +76,6 @@ class SpeechRecognitionEngine:
             out = out.transpose(0, 1)
             self.out_args = out if self.out_args is None else torch.cat((self.out_args, out), dim=1)
             results = self.beam_search(self.out_args)
-            # results = DecodeGreedy(self.out_args)
             current_context_length = self.out_args.shape[1] / 50  # in seconds
             if self.out_args.shape[1] > self.context_length:
                 self.out_args = None
