@@ -7,9 +7,10 @@ textprocess = TextProcess()
 # 0 - 90
 labels = [' ', 'a', 'ă', 'â', 'b', 'c', 'd', 'đ', 'e', 'ê', 'g', 'h', 'i', 'k', 'l', 'm', 'n', 'o', 'ô', 'ơ', 'p', 'q', 'r', 's', 't', 'u', 'ư', 'v', 'x', 'y', 'à', 'á', 'ả', 'ã', 'ạ', 'ằ', 'ắ', 'ẳ', 'ẵ', 'ặ', 'ầ', 'ấ', 'ẩ', 'ẩ', 'ẫ', 'ậ', 'è', 'é', 'ẻ', 'ẽ', 'ẹ', 'ề', 'ế', 'ể', 'ễ', 'ệ', 'ì', 'í', 'ỉ', 'ĩ', 'ị', 'ò', 'ó', 'ỏ', 'õ', 'ọ', 'ồ', 'ố', 'ổ', 'ỗ', 'ộ', 'ờ', 'ớ', 'ở', 'ỡ', 'ợ', 'ù', 'ú', 'ủ', 'ũ', 'ụ', 'ừ', 'ứ', 'ử', 'ữ', 'ự', 'ỳ', 'ý', 'ỷ', 'ỹ', 'ỵ']
 
-def DecodeGreedy(output, blank_label=91, collapse_repeated=True):
-    arg_maxes = torch.argmax(output, dim=2).squeeze(1)
+def DecodeGreedy(output, blank_label=0, collapse_repeated=True):
+    arg_maxes = torch.argmax(output, dim=2).squeeze(0)
     decode = []
+    print(output.shape)
     for i, index in enumerate(arg_maxes):
         if index != blank_label:
             if collapse_repeated and index == arg_maxes[i-1]:

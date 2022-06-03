@@ -21,8 +21,8 @@ class DropNorm(nn.Module):
 
 class SpeechRecognition(nn.Module):
     hyper_parameters = {
-        "num_classes": 29,
-        "n_feats": 80,
+        "num_classes": 91,
+        "n_feats": 128,
         "dropout": 0.1,
         "hidden_size": 1024,
         "num_layers": 1
@@ -33,7 +33,7 @@ class SpeechRecognition(nn.Module):
         self.num_layers = num_layers
         self.hidden_size = hidden_size
         self.cnn = nn.Sequential(
-            nn.Conv1d(n_feats, n_feats, 10, 2, padding=10//2),
+            nn.Conv1d(n_feats, n_feats, 10, 2),
             DropNorm(n_feats, dropout),
         )
         self.dense = nn.Sequential(
