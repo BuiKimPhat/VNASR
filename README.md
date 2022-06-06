@@ -1,17 +1,28 @@
 # VNASR
 Automatic Speech Recognition for Vietnamese
 
-## Install modules
+## Install dependencies
 ```
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## [*Download*](https://commonvoice.mozilla.org/vi/datasets) the Commonvoice dataset
 
-## Load dataset
+## Load dataset (for training only)
 Convert the mp3 files to wav and export json data with the form `{key: "/path/to/audio", text: "transcript sentence"}`
 
-Use
+Use:
 ```
-python3 ./scripts/commonvoice_to_json.py --tsv_path /path/to/tsv/file --save_path /path/to/json/file
+py ./scripts/commonvoice_to_json.py --tsv_path /path/to/tsv/file --save_path /path/to/json/file
 ```
+
+## Run server
+```
+cd ./server
+py ./app.py
+```
+Server is then ready on port 6969
+You can test it by Postman. Send POST request to http://127.0.0.1:6969 with form-data:
+
+key: audio (file type)
+value: upload the file you want to predict
