@@ -33,7 +33,7 @@ def predict(filename):
         out_args = out if out_args is None else torch.cat((out_args, out), dim=1)
         return DecodeGreedy(out_args)
 	
-@app.route('/', methods = ['POST'])
+@app.route('/', methods = ['GET','POST'])
 def predict_audio():
     save_name = "audio_temp.wav"
     if request.method == 'POST':
@@ -41,8 +41,15 @@ def predict_audio():
         if f.filename.split(".")[-1] == "wav":
             f.filename = save_name
             f.save(f.filename)
-            return predict(save_name)
+            return "Speech to text: " + predict(save_name)
         else:
-            return "File must be in .wav format"
-
+            return "Error: File must be in .wav format"
+    else: 
+        return """
+            <form action="/" method="post" enctype = "multipart/form-data">
+                <input name="audio" type="file" />
+                <input type="submit" />
+            </form>
+        """
+        
 app.run(host="0.0.0.0", port=6969)
