@@ -25,7 +25,7 @@ def main(args):
         if(args.convert):
             print(str(length) + " files found")
         for row in reader:
-            if index > length//3:
+            if index > 24000:
                 break
             file_name = row['filename'] # with extension .mp3
             filename = file_name.rpartition('.')[0] + ".wav" # with new extension .wav
