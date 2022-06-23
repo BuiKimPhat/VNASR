@@ -29,18 +29,18 @@ def main(args):
             text = row['text']
             if(args.convert):
                 data.append({
-                "key": directory + "/cv_valid_train/" + filename,
+                "key": directory + "/cv-valid-train/" + filename,
                 "text": text
                 })
                 print("converting file " + str(index) + "/" + str(length) + " to wav")
-                src = directory + "/cv_valid_train/" + file_name
-                dst = directory + "/cv_valid_train/" + filename
+                src = directory + "/cv-valid-train/" + file_name
+                dst = directory + "/cv-valid-train/" + filename
                 sound = AudioSegment.from_mp3(src)
                 sound.export(dst, format="wav")
                 index = index + 1
             else:
                 data.append({
-                "key": directory + "/cv_valid_train/" + filename,
+                "key": directory + "/cv-valid-train/" + filename,
                 "text": text
                 })
                 
