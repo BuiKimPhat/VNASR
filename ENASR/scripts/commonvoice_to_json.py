@@ -11,6 +11,7 @@ from pydub import AudioSegment
 def main(args):
     data = []
     directory = args.tsv_path.rpartition('/')[0]
+    dest_dir = args.tsv_save
     percent = args.percent
     
     # count number of lines in the .tsv file
@@ -29,12 +30,12 @@ def main(args):
             text = row['text']
             if(args.convert):
                 data.append({
-                "key": directory + "/cv-valid-train/" + filename,
+                "key": dest_dir + "/cv-valid-train/" + filename,
                 "text": text
                 })
                 print("converting file " + str(index) + "/" + str(length) + " to wav")
                 src = directory + "/cv-valid-train/" + file_name
-                dst = directory + "/cv-valid-train/" + filename
+                dst = dest_dir + "/cv-valid-train/" + filename
                 sound = AudioSegment.from_mp3(src)
                 sound.export(dst, format="wav")
                 index = index + 1
@@ -76,6 +77,8 @@ if __name__ == "__main__":
     """)
     parser.add_argument('--tsv_path', type=str, default=None, required=True,
                         help='path to one of the .tsv files found in cv-corpus')
+    parser.add_argument('--tsv_save', type=str, default=None, required=True,
+                        help='path to save wav files')
     parser.add_argument('--save_path', type=str, default=None, required=True,
                         help='path to the dir where the json files are supposed to be saved')
     parser.add_argument('--percent', type=int, default=10, required=False,
