@@ -19,7 +19,7 @@ def main(args):
     
     # read csv file
     with open(args.tsv_path, newline='') as csvfile: 
-        reader = csv.DictReader(csvfile, delimiter='\t')
+        reader = csv.DictReader(csvfile, delimiter=',')
         index = 1
         if(args.convert):
             print(str(length) + " files found")
