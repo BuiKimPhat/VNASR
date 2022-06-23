@@ -1,4 +1,5 @@
 Flask
+PySoundFile
 pydub
 torch
 torchvision
