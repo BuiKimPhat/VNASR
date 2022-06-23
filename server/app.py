@@ -10,7 +10,7 @@ import os
 
 SAVE_PATH = 'trained_model.pth' # model save path
 
-app = Flask(__name__)
+app = Flask(_name_)
 
 h_params = SpeechRecognition.hyper_parameters
 model = SpeechRecognition(**h_params)
@@ -29,21 +29,16 @@ def predict(filename):
         out, _ = model(model_in, hidden)
         out = torch.nn.functional.softmax(out, dim=2)
         out = out.transpose(0, 1)
-        out_args = None
-        out_args = out if out_args is None else torch.cat((out_args, out), dim=1)
-        return DecodeGreedy(out_args)
+        return DecodeGreedy(out)
 	
 @app.route('/', methods = ['GET','POST'])
 def predict_audio():
     save_name = "audio_temp.wav"
     if request.method == 'POST':
-        f = request.files['audio']
-        if f.filename.split(".")[-1] == "wav":
-            f.filename = save_name
-            f.save(f.filename)
-            return "Speech to text: " + predict(save_name)
-        else:
-            return "Error: File must be in .wav format"
+        with open(save_name, mode='bw') as f:
+            f.write(request.data)
+        return "Speech to text: " + predict(save_name) + "\n"
+
     else: 
         return """
             <form action="/" method="post" enctype = "multipart/form-data">
@@ -51,5 +46,13 @@ def predict_audio():
                 <input type="submit" />
             </form>
         """
+
+@app.route('/test', methods = ['POST'])
+def test_esp():
+    save_name = "audio_temp.wav"
+    if request.method == 'POST':
+        with open(save_name, mode='bw') as f:
+            f.write(request.data)
+        return predict(save_name)
         
 app.run(host="0.0.0.0", port=6969)
