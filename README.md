@@ -22,7 +22,9 @@ cd ./server
 py ./app.py
 ```
 Server is then ready on port 6969
-You can test it by Postman. Send POST request to http://127.0.0.1:6969 with form-data:
 
-key: audio (file type)
+Request:
+method = "POST"
+enctype = "multipart/form-data"
+key: audio (file type)      
 value: upload the file you want to predict
