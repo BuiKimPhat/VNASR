@@ -22,16 +22,16 @@ featurizer = torchaudio.transforms.MelSpectrogram(sample_rate=8000, n_mels=80)
 def predict(filename):
     with torch.no_grad():
         waveform, sr = torchaudio.load(filename)
-        inputs = np.log(featurizer(waveform) + 1e-20)
+        inputs = np.log(featurizer(waveform) + 1e-20) # (channels, features, time)
         hidden = (torch.zeros(1, 1, 1024),
                 torch.zeros(1, 1, 1024))
-        model_in = inputs.unsqueeze(1)
-        out, _ = model(model_in, hidden)
-        out = torch.nn.functional.softmax(out, dim=2)
-        out = out.transpose(0, 1)
-        out_args = None
-        out_args = out if out_args is None else torch.cat((out_args, out), dim=1)
-        return DecodeGreedy(out_args)
+        model_in = inputs.unsqueeze(1) # (channels, batch_size = 1, features, time)
+        out, _ = model(model_in, hidden)  # (time, batch, n_class)
+        out = torch.nn.functional.softmax(out, dim=2) 
+        out = out.transpose(0, 1) # (batch, time, n_class)
+        # out_args = None
+        # out_args = out if out_args is None else torch.cat((out_args, out), dim=1)
+        return DecodeGreedy(out)
 	
 @app.route('/', methods = ['GET','POST'])
 def predict_audio():
